@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reefcode: conversations about the ocean and the science and technology protecting it</title>
+<meta name="description" content="Reefcode is a video podcast with the scientists, founders and next-generation researchers working to protect the ocean, and the science and technology behind their work.">
+<meta property="og:title" content="Reefcode">
+<meta property="og:description" content="Conversations with the people protecting the ocean, and the science and technology behind their work.">
+<meta property="og:url" content="https://reefcodeshow.com">
+<meta property="og:image" content="https://reefcodeshow.com/images/host-portrait.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0D2B3A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230D2B3A'/%3E%3Cpath d='M12 40c8-10 14-14 20-14s12 4 20 14' fill='none' stroke='%237FD3CF' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M18 48c5-6 9-8 14-8s9 2 14 8' fill='none' stroke='%23E2574C' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EEF5F4;
+    --shallow: #D6EAE8;
+    --ink: #0D2B3A;
+    --ink-soft: #3F5D6B;
+    --contour: #2B7A86;
+    --coral: #E2574C;
+    --coral-deep: #B93E34;
+    --rule: #B9D4D3;
+    --measure: 64ch;
+    --gutter: clamp(16px, 5vw, 64px);
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  a { color: inherit; }
+  img { display: block; max-width: 100%; height: auto; }
+  :focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; border-radius: 4px; }
+  figure { margin: 0; }
+
+  /* Header */
+  .site-head {
+    position: absolute; inset: 0 0 auto 0; z-index: 3;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px var(--gutter);
+  }
+  .wordmark {
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
+    font-size: 1.25rem; letter-spacing: -0.02em; text-decoration: none;
+  }
+  .site-head nav { display: flex; gap: clamp(14px, 3vw, 32px); font-size: 0.95rem; }
+  .site-head nav a { text-decoration: none; color: var(--ink-soft); }
+  .site-head nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+
+  /* Hero: a live depth chart drawn in code */
+  .hero {
+    position: relative; overflow: hidden;
+    min-height: min(92vh, 860px);
+    display: flex; align-items: flex-end;
+    padding: 120px var(--gutter) clamp(48px, 8vh, 96px);
+    background: linear-gradient(180deg, var(--paper) 0%, var(--shallow) 100%);
+  }
+  #chart { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero-copy { position: relative; z-index: 2; max-width: 46rem; }
+  .hero-copy::before {
+    content: ""; position: absolute; z-index: -1;
+    inset: -12% -18% -16% -12%;
+    background: radial-gradient(ellipse at 35% 60%, var(--paper) 30%, color-mix(in srgb, var(--paper) 0%, transparent) 70%);
+  }
+  .hero h1 {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 800;
+    font-size: clamp(4rem, 15vw, 11rem);
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+    margin: 0 0 0.25em;
+  }
+  .hero .lede { font-size: clamp(1.2rem, 2.4vw, 1.6rem); line-height: 1.4; max-width: 30ch; margin: 0 0 1.75rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+  .btn {
+    display: inline-block; text-decoration: none; cursor: pointer;
+    background: var(--coral); color: #fff; border: 0;
+    font: inherit; font-weight: 700; padding: 0.85em 1.4em; border-radius: 999px;
+    transition: background 0.15s;
+  }
+  .btn:hover { background: var(--coral-deep); }
+  .btn[disabled] { opacity: 0.6; cursor: progress; }
+  .status { color: var(--ink-soft); font-size: 0.98rem; }
+
+  /* Sections */
+  main section { padding: clamp(56px, 9vw, 112px) var(--gutter); }
+  .wrap { max-width: 72rem; margin: 0 auto; }
+  h2 {
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.25rem); line-height: 1.05;
+    letter-spacing: -0.03em; margin: 0 0 1.25rem; max-width: 18ch;
+  }
+  h3 {
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
+    font-size: 1.4rem; letter-spacing: -0.01em; margin: 0 0 0.4rem;
+  }
+  p { margin: 0 0 1rem; max-width: var(--measure); }
+  .intro { font-size: 1.2rem; color: var(--ink-soft); }
+
+  /* Pillars */
+  .pillars {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 2.5rem 3rem; margin-top: 3rem;
+  }
+  .pillar { display: flex; flex-direction: column; }
+  .pillar-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; margin-bottom: 1.25rem; }
+  .pillar-text { border-top: 2px solid var(--contour); padding-top: 1.1rem; }
+  .pillar p { color: var(--ink-soft); }
+
+  /* Formats */
+  .formats { background: var(--ink); color: var(--paper); }
+  .formats h2 { color: #fff; }
+  .formats .intro { color: #B7CFD3; }
+  .format-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 3rem; margin-top: 2.5rem;
+  }
+  .format-photo img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 14px; margin-bottom: 1.5rem; }
+  .format .length {
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
+    font-size: clamp(2.6rem, 6vw, 4rem); line-height: 1; color: #7FD3CF;
+    letter-spacing: -0.03em; margin-bottom: 0.6rem;
+  }
+  .format p { color: #C9DCDF; }
+
+  /* Guests and pitch form */
+  .guest { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3rem; }
+  @media (min-width: 960px) { .guest { grid-template-columns: 1fr 1.1fr; gap: 5rem; } }
+  .steps { list-style: none; margin: 2rem 0 0; padding: 0; counter-reset: step; }
+  .steps li {
+    counter-increment: step; position: relative;
+    padding: 0 0 1.5rem 3.25rem; max-width: var(--measure);
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: -0.1rem;
+    width: 2.1rem; height: 2.1rem; border-radius: 50%;
+    border: 2px solid var(--contour); color: var(--contour);
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
+    display: grid; place-items: center; font-size: 1rem;
+  }
+  .steps li:not(:last-child)::after {
+    content: ""; position: absolute; left: calc(1.05rem - 1px); top: 2.2rem; bottom: 0.2rem;
+    border-left: 2px dotted var(--rule);
+  }
+  .steps strong { display: block; font-size: 1.08rem; }
+  .steps span { color: var(--ink-soft); }
+
+  .pitch {
+    background: #fff; border-radius: 20px; padding: clamp(20px, 4vw, 40px);
+    box-shadow: 0 0 0 1px var(--rule);
+    scroll-margin-top: 24px;
+  }
+  .pitch h3 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+  .pitch .hint { color: var(--ink-soft); margin-bottom: 1.5rem; }
+  .field { margin-bottom: 1.1rem; }
+  .field label { display: block; font-weight: 700; margin-bottom: 0.35rem; }
+  .field .optional { font-weight: 400; color: var(--ink-soft); }
+  .field input, .field textarea {
+    width: 100%; font: inherit; color: var(--ink);
+    background: var(--paper); border: 1.5px solid var(--rule); border-radius: 10px;
+    padding: 0.7em 0.85em;
+  }
+  .field textarea { min-height: 7.5rem; resize: vertical; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--contour); box-shadow: 0 0 0 3px color-mix(in srgb, var(--contour) 25%, transparent); }
+  .two-up { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 1rem; }
+  @media (min-width: 560px) { .two-up { grid-template-columns: 1fr 1fr; } }
+  .trap { position: absolute; left: -9999px; }
+  .form-note { margin-top: 1rem; font-size: 0.95rem; color: var(--ink-soft); }
+  .form-note.error { color: var(--coral-deep); font-weight: 700; }
+  .sent h3 { color: var(--contour); }
+
+  /* Host */
+  .host { background: var(--shallow); }
+  .host-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; align-items: start; }
+  @media (min-width: 860px) { .host-grid { grid-template-columns: minmax(16rem, 24rem) minmax(0, 1fr); gap: 4.5rem; } }
+  .host-portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 18px; }
+  .host-name { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 1.5rem; margin: 0 0 0.2rem; }
+  .host-role { color: var(--ink-soft); margin-bottom: 1.5rem; }
+  .host-bio p { font-size: 1.1rem; }
+  .facts {
+    list-style: none; padding: 0; margin: 2rem 0 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1rem 2rem;
+  }
+  .facts li { border-left: 3px solid var(--coral); padding-left: 0.9rem; line-height: 1.35; }
+  .facts strong { display: block; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.15rem; }
+  .facts span { color: var(--ink-soft); font-size: 0.95rem; }
+
+  .strip {
+    display: grid; gap: 12px; margin-top: clamp(40px, 6vw, 72px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (min-width: 760px) { .strip { grid-template-columns: 0.75fr 1.5fr 0.75fr; } }
+  .strip figure { position: relative; }
+  .strip img { width: 100%; height: clamp(220px, 32vw, 380px); object-fit: cover; border-radius: 14px; }
+  .strip figcaption {
+    position: absolute; left: 10px; bottom: 10px;
+    background: color-mix(in srgb, var(--ink) 78%, transparent); color: #fff;
+    font-size: 0.85rem; padding: 0.25em 0.7em; border-radius: 999px;
+  }
+  @media (max-width: 759px) { .strip figure.wide { grid-column: 1 / -1; order: -1; } }
+
+  /* Contact */
+  .contact h2 { max-width: 20ch; }
+  .mail {
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
+    font-size: clamp(1.5rem, 5vw, 2.75rem); letter-spacing: -0.02em;
+    color: var(--ink); text-decoration-color: var(--coral);
+    text-decoration-thickness: 3px; text-underline-offset: 8px;
+    overflow-wrap: anywhere;
+  }
+  .mail:hover { color: var(--coral-deep); }
+
+  footer {
+    padding: 28px var(--gutter); border-top: 1px solid var(--rule);
+    color: var(--ink-soft); font-size: 0.9rem;
+  }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+
+  @media (max-width: 560px) {
+    .site-head nav a.hide-sm { display: none; }
+    .hero { min-height: 88vh; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <a class="wordmark" href="#top">Reefcode</a>
+  <nav aria-label="Main">
+    <a class="hide-sm" href="#show">The show</a>
+    <a href="#guests">Be a guest</a>
+    <a class="hide-sm" href="#host">Host</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="title">
+    <canvas id="chart" aria-hidden="true"></canvas>
+    <div class="hero-copy">
+      <h1 id="title">Reefcode</h1>
+      <p class="lede">Conversations with the people protecting the ocean, and the science and technology behind their work.</p>
+      <div class="actions">
+        <a class="btn" href="#pitch" data-open-pitch>Pitch yourself as a guest</a>
+        <span class="status">First episodes coming soon</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="show" aria-labelledby="show-title">
+    <div class="wrap">
+      <h2 id="show-title">What happens below the surface, explained by the people working there</h2>
+      <p class="intro">Reefcode talks with marine scientists, ocean-tech founders and early-career researchers about the problems they're working on, the tools they use, and how they got into the field.</p>
+      <div class="pillars">
+        <div class="pillar">
+          <figure class="pillar-photo" data-photo>
+            <img src="images/science-reef-survey.jpg" alt="A diver recording data over branching coral during a reef survey" width="1290" height="832" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+          </figure>
+          <div class="pillar-text">
+            <h3>Science</h3>
+            <p>What researchers are learning about reefs, fisheries, plastics and a warming ocean, and what it means for the rest of us.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <figure class="pillar-photo" data-photo>
+            <img src="images/solutions.jpg" alt="A field station table with a laptop running fish detection, an underwater drone and a dive camera" width="1200" height="896" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+          </figure>
+          <div class="pillar-text">
+            <h3>Solutions</h3>
+            <p>The technology in use today: machine learning, satellites, sensors and underwater robotics, plus the policy that makes them count.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <figure class="pillar-photo" data-photo>
+            <img src="images/people-team.jpg" alt="Manu with the Blue Corner Manta Research team in Indonesia" width="992" height="744" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+          </figure>
+          <div class="pillar-text">
+            <h3>People</h3>
+            <p>Career paths into ocean work, the decisions behind them, and honest advice for anyone who wants to follow.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="formats" aria-labelledby="formats-title">
+    <div class="wrap">
+      <h2 id="formats-title">Two kinds of episodes</h2>
+      <p class="intro">Every episode is recorded on video and released on Spotify, YouTube and other podcast apps.</p>
+      <div class="format-grid">
+        <div class="format">
+          <figure class="format-photo" data-photo>
+            <img src="images/format-conversation.jpg" alt="Manu in headphones recording a remote interview, a guest on the laptop screen" width="1376" height="768" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+          </figure>
+          <div class="length">40 min</div>
+          <h3>Conversations</h3>
+          <p>Long-form interviews with scientists, founders and leaders at ocean organisations about the work they're doing now.</p>
+        </div>
+        <div class="format">
+          <figure class="format-photo" data-photo>
+            <img src="images/format-field-notes.jpg" alt="A student researcher recording a voice note on a dive boat" width="1376" height="768" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+          </figure>
+          <div class="length">20 min</div>
+          <h3>Field Notes</h3>
+          <p>Shorter episodes with students and early-career researchers, recorded close to the fieldwork: what they're studying, what surprised them, and what comes next.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="guests" aria-labelledby="guests-title">
+    <div class="wrap guest">
+      <div>
+        <h2 id="guests-title">Be a guest on Reefcode</h2>
+        <p class="intro">If you research, build or fund work that protects the ocean, we'd like to hear from you. Students and early-career researchers are especially welcome.</p>
+        <ol class="steps" aria-label="How recording works">
+          <li><strong>Send a short pitch</strong><span>A few lines about your work and what you'd like to talk about.</span></li>
+          <li><strong>Get the questions in advance</strong><span>We share the topics and sample questions about a week before recording.</span></li>
+          <li><strong>Record remotely</strong><span>About 45 minutes from your browser. Wired earphones and a quiet room are all you need.</span></li>
+          <li><strong>Share the episode</strong><span>We send you the episode and short clips to post when it goes live.</span></li>
+        </ol>
+      </div>
+
+      <div class="pitch" id="pitch">
+        <form id="pitch-form" novalidate>
+          <h3>Send your pitch</h3>
+          <p class="hint">Takes about two minutes. We reply by email.</p>
+          <div class="two-up">
+            <div class="field">
+              <label for="p-name">Your name</label>
+              <input id="p-name" name="name" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="p-email">Email</label>
+              <input id="p-email" name="email" type="email" autocomplete="email" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="p-role">Role and organisation</label>
+            <input id="p-role" name="role" placeholder="e.g. PhD student, reef ecology lab" required>
+          </div>
+          <div class="field">
+            <label for="p-topic">What would you like to talk about?</label>
+            <textarea id="p-topic" name="topic" placeholder="Your work, a recent finding, a tool you're building, or how you got into the field." required></textarea>
+          </div>
+          <div class="field">
+            <label for="p-links">Links <span class="optional">(optional)</span></label>
+            <input id="p-links" name="links" placeholder="LinkedIn, lab page, paper or project">
+          </div>
+          <input class="trap" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn" type="submit">Send pitch</button>
+          <p class="form-note" id="pitch-note" role="status" aria-live="polite"></p>
+        </form>
+        <div class="sent" id="pitch-sent" hidden tabindex="-1">
+          <h3>Pitch sent. Thank you.</h3>
+          <p>We read every pitch and will reply to the email you gave us.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="host" class="host" aria-labelledby="host-title">
+    <div class="wrap">
+      <div class="host-grid">
+        <figure class="host-portrait" data-photo>
+          <img src="images/host-portrait.jpg" alt="Manu Paramesh in his podcast studio" width="921" height="1152" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+        </figure>
+        <div>
+          <h2 id="host-title">Your host</h2>
+          <p class="host-name">Manu Paramesh</p>
+          <p class="host-role">Machine learning engineer by day, part-time fish on weekends. Based in Bangalore.</p>
+          <div class="host-bio">
+            <p>I've spent more than a decade building machine-learning systems, with work that's taken me across India, Africa and Europe. These days some of it is audio ML, which is a fancy way of saying I teach computers to listen. Starting a podcast seemed like a fair way to do some listening myself.</p>
+            <p>Training in coral conservation with Blue Corner Marine Research in Indonesia changed how I see my own work. The people protecting the ocean are doing remarkable things with very little attention, and many rely on the same kinds of tools I use every day: cameras and models that count fish, satellites that track boats, hydrophones that listen to reefs.</p>
+            <p>Reefcode is how I hand them the mic. If you work on the ocean, in a lab, on a boat or in a startup, I'd love to hear what you're working on. If you're just curious about what's going on down there, pull up a chair. No wetsuit required.</p>
+          </div>
+          <ul class="facts" aria-label="Off the clock">
+            <li><strong>Ironman finisher</strong><span>Still not entirely sure why I signed up</span></li>
+            <li><strong>5+ dive spots</strong><span>Scuba and freediving. The fish remain unimpressed.</span></li>
+            <li><strong>Coral conservation</strong><span>Trained with Blue Corner Marine Research</span></li>
+            <li><strong>Guitar, occasionally</strong><span>Animals are the only audience that stays for the whole song</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="strip">
+        <figure data-photo>
+          <img src="images/host-freedive.jpg" alt="Manu freediving in open water" width="768" height="1356" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+        </figure>
+        <figure class="wide" data-photo>
+          <img src="images/host-dive.jpg" alt="Manu scuba diving in clear blue water" width="1287" height="832" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+        </figure>
+        <figure data-photo>
+          <img src="images/host-blue-corner.jpg" alt="Manu with a colleague on the beach outside Blue Corner Marine Research in Indonesia" width="900" height="1200" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+          <figcaption>Blue Corner, Indonesia</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 id="contact-title">Get in touch</h2>
+      <p class="intro">For partnerships, press and everything else. Guests, please use the <a href="#pitch" data-open-pitch>pitch form</a>.</p>
+      <a class="mail" href="mailto:hello@reefcodeshow.com">hello@reefcodeshow.com</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Reefcode</span>
+    <span>Recorded in Bangalore, with guests around the world</span>
+  </div>
+</footer>
+
+<script>
+/* ---------------------------------------------------------------
+   Guest pitch form.
+   Paste your free Web3Forms access key below (web3forms.com).
+   Pitches then arrive in the inbox you used to create the key.
+   Until a key is added, the form opens a pre-filled email instead.
+---------------------------------------------------------------- */
+const WEB3FORMS_KEY = 'PASTE_YOUR_ACCESS_KEY_HERE';
+const PITCH_EMAIL = 'hello@reefcodeshow.com';
+
+(() => {
+  const form = document.getElementById('pitch-form');
+  const note = document.getElementById('pitch-note');
+  const sent = document.getElementById('pitch-sent');
+  const button = form.querySelector('button[type="submit"]');
+  const hasKey = WEB3FORMS_KEY && !WEB3FORMS_KEY.startsWith('PASTE_');
+
+  // Every "pitch" link scrolls to the form and puts the cursor in the first field.
+  document.querySelectorAll('[data-open-pitch]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('pitch').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      setTimeout(() => document.getElementById('p-name').focus({ preventScroll: true }), 450);
+      history.replaceState(null, '', '#pitch');
+    });
+  });
+
+  const labelFor = (el) => form.querySelector(`label[for="${el.id}"]`).childNodes[0].textContent.trim().toLowerCase();
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    note.className = 'form-note'; note.textContent = '';
+
+    const missing = [...form.querySelectorAll('[required]')].find((el) => !el.value.trim());
+    if (missing) { note.className = 'form-note error'; note.textContent = `Add ${labelFor(missing)} to send your pitch.`; missing.focus(); return; }
+    const email = form.querySelector('#p-email');
+    if (!email.checkValidity()) { note.className = 'form-note error'; note.textContent = 'Check the email address; it looks incomplete.'; email.focus(); return; }
+
+    const data = Object.fromEntries(new FormData(form));
+    if (data.botcheck) return;
+
+    if (!hasKey) {
+      const body = `Name: ${data.name}\nEmail: ${data.email}\nRole and organisation: ${data.role}\n\nWhat I'd like to talk about:\n${data.topic}\n\nLinks: ${data.links || '-'}`;
+      window.location.href = `mailto:${PITCH_EMAIL}?subject=${encodeURIComponent('Guest pitch: ' + data.name)}&body=${encodeURIComponent(body)}`;
+      note.textContent = `Your email app should open with the pitch filled in. If it doesn't, send it to ${PITCH_EMAIL}.`;
+      return;
+    }
+
+    button.disabled = true; button.textContent = 'Sending…';
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `Reefcode guest pitch: ${data.name}`,
+          from_name: 'Reefcode website',
+          replyto: data.email,
+          name: data.name, email: data.email,
+          'Role and organisation': data.role,
+          'What they want to talk about': data.topic,
+          Links: data.links || '-',
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || json.success === false) throw new Error(json.message || res.status);
+      form.hidden = true; sent.hidden = false; sent.focus();
+    } catch (err) {
+      note.className = 'form-note error';
+      note.textContent = `Your pitch didn't send. Check your connection and try again, or email ${PITCH_EMAIL}.`;
+    } finally {
+      button.disabled = false; button.textContent = 'Send pitch';
+    }
+  });
+})();
+
+/* A depth chart drawn in code: contour lines of a slowly shifting noise field (marching squares). */
+(() => {
+  const canvas = document.getElementById('chart');
+  const ctx = canvas.getContext('2d');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const perm = new Uint8Array(512);
+  (() => { const p = []; for (let i = 0; i < 256; i++) p.push(i);
+    let s = 7; for (let i = 255; i > 0; i--) { s = (s * 16807) % 2147483647; const j = s % (i + 1); [p[i], p[j]] = [p[j], p[i]]; }
+    for (let i = 0; i < 512; i++) perm[i] = p[i & 255]; })();
+  const fade = t => t * t * (3 - 2 * t);
+  const hash = (x, y) => perm[(perm[x & 255] + y) & 255] / 255;
+  function noise(x, y) {
+    const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+    const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+    const u = fade(xf), v = fade(yf);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  }
+  const fbm = (x, y) => noise(x, y) * 0.6 + noise(x * 2.1 + 5.3, y * 2.1 + 1.7) * 0.28 + noise(x * 4.3 + 9.1, y * 4.3 + 3.3) * 0.12;
+
+  let W = 0, H = 0, cols = 0, rows = 0, cell = 12, field = null;
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cell = W < 600 ? 10 : 12;
+    cols = Math.ceil(W / cell) + 1; rows = Math.ceil(H / cell) + 1;
+    field = new Float32Array(cols * rows);
+  }
+
+  const levels = [0.30, 0.36, 0.42, 0.48, 0.54, 0.60, 0.66, 0.72];
+  function sample(t) {
+    const sc = 0.0042;
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      const x = i * cell * sc, y = j * cell * sc;
+      let v = fbm(x + t * 0.05, y + 0.3) * 0.62 + fbm(x * 1.3 + 4, y * 1.3 - t * 0.035) * 0.38;
+      v += 0.16 * (i / cols) + 0.06 * (j / rows) - 0.08;
+      field[j * cols + i] = v;
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (let k = 0; k < levels.length; k++) {
+      const lv = levels[k];
+      const deep = k / (levels.length - 1);
+      const isHighlight = k === levels.length - 2;
+      ctx.strokeStyle = isHighlight ? 'rgba(226,87,76,0.55)' : `rgba(43,122,134,${0.18 + deep * 0.32})`;
+      ctx.lineWidth = isHighlight ? 1.6 : 1 + deep * 0.4;
+      ctx.beginPath();
+      for (let j = 0; j < rows - 1; j++) for (let i = 0; i < cols - 1; i++) {
+        const a = field[j * cols + i], b = field[j * cols + i + 1];
+        const c = field[(j + 1) * cols + i + 1], d = field[(j + 1) * cols + i];
+        const idx = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (c > lv ? 2 : 0) | (d > lv ? 1 : 0);
+        if (idx === 0 || idx === 15) continue;
+        const x = i * cell, y = j * cell;
+        const top = [x + cell * (lv - a) / (b - a), y];
+        const right = [x + cell, y + cell * (lv - b) / (c - b)];
+        const bottom = [x + cell * (lv - d) / (c - d), y + cell];
+        const left = [x, y + cell * (lv - a) / (d - a)];
+        const seg = (p, q) => { ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); };
+        switch (idx) {
+          case 1: case 14: seg(left, bottom); break;
+          case 2: case 13: seg(bottom, right); break;
+          case 3: case 12: seg(left, right); break;
+          case 4: case 11: seg(top, right); break;
+          case 5: seg(left, top); seg(bottom, right); break;
+          case 6: case 9: seg(top, bottom); break;
+          case 7: case 8: seg(left, top); break;
+          case 10: seg(left, bottom); seg(top, right); break;
+        }
+      }
+      ctx.stroke();
+    }
+  }
+
+  let t = 0, last = 0, visible = true, running = false;
+  function frame(now) {
+    if (!visible) { running = false; return; }
+    if (now - last > 50) { t += (now - last) / 1000; last = now; sample(t); draw(); }
+    requestAnimationFrame(frame);
+  }
+  function start() { if (!running && !reduce) { running = true; last = performance.now(); requestAnimationFrame(frame); } }
+
+  resize(); sample(0); draw();
+  let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { resize(); sample(t); draw(); }, 120); });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) start(); }).observe(canvas);
+  }
+  start();
+})();
+</script>
+</body>
+</html>
