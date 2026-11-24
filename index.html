@@ -8,7 +8,11 @@
 <meta property="og:title" content="Reefcode">
 <meta property="og:description" content="Conversations with the people protecting the ocean, and the science and technology behind their work.">
 <meta property="og:url" content="https://reefcodeshow.com">
-<meta property="og:image" content="https://reefcodeshow.com/images/host-portrait.jpg">
+<meta property="og:image" content="https://reefcodeshow.com/images/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@reefcodeshow">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#0D2B3A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230D2B3A'/%3E%3Cpath d='M12 40c8-10 14-14 20-14s12 4 20 14' fill='none' stroke='%237FD3CF' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M18 48c5-6 9-8 14-8s9 2 14 8' fill='none' stroke='%23E2574C' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -191,8 +195,9 @@
   .host-bio p { font-size: 1.1rem; }
   .facts {
     list-style: none; padding: 0; margin: 2rem 0 0;
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1rem 2rem;
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem 2rem; max-width: 36rem;
   }
+  @media (min-width: 560px) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .facts li { border-left: 3px solid var(--coral); padding-left: 0.9rem; line-height: 1.35; }
   .facts strong { display: block; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.15rem; }
   .facts span { color: var(--ink-soft); font-size: 0.95rem; }
@@ -201,7 +206,7 @@
     display: grid; gap: 12px; margin-top: clamp(40px, 6vw, 72px);
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  @media (min-width: 760px) { .strip { grid-template-columns: 0.75fr 1.5fr 0.75fr; } }
+  @media (min-width: 760px) { .strip { grid-template-columns: 0.75fr 1.5fr 0.75fr 0.75fr; } }
   .strip figure { position: relative; }
   .strip img { width: 100%; height: clamp(220px, 32vw, 380px); object-fit: cover; border-radius: 14px; }
   .strip figcaption {
@@ -210,6 +215,34 @@
     font-size: 0.85rem; padding: 0.25em 0.7em; border-radius: 999px;
   }
   @media (max-width: 759px) { .strip figure.wide { grid-column: 1 / -1; order: -1; } }
+  .gallery-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem 2rem; margin-top: clamp(48px, 7vw, 88px); }
+  .gallery-head h3 { margin: 0; }
+  .gallery-head p { margin: 0; color: var(--ink-soft); }
+  .gallery-head + .strip { margin-top: 1.25rem; }
+
+  /* Lab */
+  .lab-card {
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; align-items: center;
+    background: var(--ink); color: #DCEBEC; border-radius: 22px; padding: clamp(20px, 4vw, 44px); margin-top: 2.5rem;
+  }
+  @media (min-width: 860px) { .lab-card { grid-template-columns: 1.1fr 1fr; gap: 3.5rem; } }
+  .lab-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; }
+  .lab-card h3 { color: #fff; font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 0.6rem; }
+  .lab-card p { color: #C9DCDF; }
+  .lab-meta { list-style: none; padding: 0; margin: 1.25rem 0 1.75rem; display: grid; gap: 0.45rem; }
+  .lab-meta li { padding-left: 1.4rem; position: relative; color: #C9DCDF; }
+  .lab-meta li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.6rem; height: 2px; background: #7FD3CF; }
+
+  /* Follow links */
+  .follow { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; }
+  .follow a {
+    text-decoration: none; font-weight: 700; font-size: 0.98rem;
+    padding: 0.5em 1em; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--rule);
+  }
+  .follow a:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
+  footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  footer nav a { text-decoration: none; }
+  footer nav a:hover { text-decoration: underline; }
 
   /* Contact */
   .contact h2 { max-width: 20ch; }
@@ -246,6 +279,7 @@
     <a class="hide-sm" href="#show">The show</a>
     <a href="#guests">Be a guest</a>
     <a class="hide-sm" href="#host">Host</a>
+    <a class="hide-sm" href="#lab">Lab</a>
   </nav>
 </header>
 
@@ -383,21 +417,25 @@
         <div>
           <h2 id="host-title">Your host</h2>
           <p class="host-name">Manu Paramesh</p>
-          <p class="host-role">Machine learning engineer by day, part-time fish on weekends. Based in Bangalore.</p>
+          <p class="host-role">Machine learning engineer and diver, based in Bangalore</p>
           <div class="host-bio">
-            <p>I've spent more than a decade building machine-learning systems, with work that's taken me across India, Africa and Europe. These days some of it is audio ML, which is a fancy way of saying I teach computers to listen. Starting a podcast seemed like a fair way to do some listening myself.</p>
-            <p>Training in coral conservation with Blue Corner Marine Research in Indonesia changed how I see my own work. The people protecting the ocean are doing remarkable things with very little attention, and many rely on the same kinds of tools I use every day: cameras and models that count fish, satellites that track boats, hydrophones that listen to reefs.</p>
-            <p>Reefcode is how I hand them the mic. If you work on the ocean, in a lab, on a boat or in a startup, I'd love to hear what you're working on. If you're just curious about what's going on down there, pull up a chair. No wetsuit required.</p>
+            <p>I work in AI, and I'm happiest in the ocean. For a long time those were two separate parts of my life.</p>
+            <p>By day I'm a machine learning engineer, with more than a decade of building AI systems across India, Africa and Europe. Away from the desk I'm usually in the water, diving, freediving or training for my next triathlon. Training in coral conservation with Blue Corner Marine Research in Indonesia is where the two started to meet: I saw how much patient work goes into understanding a single reef, and how rarely the people doing it get heard.</p>
+            <p>Reefcode is my way of listening to them. Each episode, I talk to someone working to protect the ocean, whether a field researcher, a student or a founder, about what they're learning and where it's heading. If that's you, I'd love to have you on the show.</p>
           </div>
           <ul class="facts" aria-label="Off the clock">
-            <li><strong>Ironman finisher</strong><span>Still not entirely sure why I signed up</span></li>
-            <li><strong>5+ dive spots</strong><span>Scuba and freediving. The fish remain unimpressed.</span></li>
+            <li><strong>Triathlete</strong><span>Most recently the T100 in Dubai</span></li>
+            <li><strong>Diver and freediver</strong><span>Five-plus dive spots around the world</span></li>
             <li><strong>Coral conservation</strong><span>Trained with Blue Corner Marine Research</span></li>
-            <li><strong>Guitar, occasionally</strong><span>Animals are the only audience that stays for the whole song</span></li>
+            <li><strong>Guitar and animals</strong><span>What fills the rest of the week</span></li>
           </ul>
         </div>
       </div>
 
+      <div class="gallery-head">
+        <h3>Off the clock</h3>
+        <p>In the water, on the bike, and on the reef</p>
+      </div>
       <div class="strip">
         <figure data-photo>
           <img src="images/host-freedive.jpg" alt="Manu freediving in open water" width="768" height="1356" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
@@ -409,6 +447,31 @@
           <img src="images/host-blue-corner.jpg" alt="Manu with a colleague on the beach outside Blue Corner Marine Research in Indonesia" width="900" height="1200" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
           <figcaption>Blue Corner, Indonesia</figcaption>
         </figure>
+        <figure data-photo>
+          <img src="images/gallery-triathlon.jpg" alt="Manu swimming, cycling, running and holding his finisher medal at the T100 Triathlon in Dubai" width="286" height="512" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="lab" aria-labelledby="lab-title">
+    <div class="wrap">
+      <h2 id="lab-title">Reefcode Lab</h2>
+      <p class="intro">Small things we build to get more people curious about the ocean, starting with the youngest listeners.</p>
+      <div class="lab-card">
+        <a href="ocean-painter/" aria-label="Open Ocean Painter">
+          <img src="images/lab-ocean-painter.jpg" alt="Ocean Painter: a world map with glowing ocean regions and cards for sea creatures like the marine iguana and blue whale" width="960" height="720" loading="lazy" decoding="async">
+        </a>
+        <div>
+          <h3>Ocean Painter</h3>
+          <p>An interactive world map for kids. They explore nine real ocean regions, meet creatures found nowhere else on Earth, and paint them back to life.</p>
+          <ul class="lab-meta">
+            <li>Made for curious kids and the grown-ups beside them</li>
+            <li>Works in any browser, on a phone or a laptop</li>
+            <li>Free, with no sign-up and no ads</li>
+          </ul>
+          <a class="btn" href="ocean-painter/">Open Ocean Painter</a>
+        </div>
       </div>
     </div>
   </section>
@@ -418,6 +481,13 @@
       <h2 id="contact-title">Get in touch</h2>
       <p class="intro">For partnerships, press and everything else. Guests, please use the <a href="#pitch" data-open-pitch>pitch form</a>.</p>
       <a class="mail" href="mailto:hello@reefcodeshow.com">hello@reefcodeshow.com</a>
+      <div class="follow" aria-label="Follow Reefcode">
+        <a href="https://www.youtube.com/@Reefcodeshow" rel="noopener">YouTube</a>
+        <a href="https://www.instagram.com/reefcodeshow/" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/company/reefcodeshow/" rel="noopener">LinkedIn</a>
+        <a href="https://bsky.app/profile/reefcodeshow.com" rel="noopener">Bluesky</a>
+        <a href="https://x.com/reefcodeshow" rel="noopener">X</a>
+      </div>
     </div>
   </section>
 </main>
@@ -425,7 +495,13 @@
 <footer>
   <div class="wrap">
     <span>© 2026 Reefcode</span>
-    <span>Recorded in Bangalore, with guests around the world</span>
+    <nav aria-label="Reefcode elsewhere">
+      <a href="https://www.youtube.com/@Reefcodeshow" rel="noopener">YouTube</a>
+      <a href="https://www.instagram.com/reefcodeshow/" rel="noopener">Instagram</a>
+      <a href="https://www.linkedin.com/company/reefcodeshow/" rel="noopener">LinkedIn</a>
+      <a href="https://bsky.app/profile/reefcodeshow.com" rel="noopener">Bluesky</a>
+      <a href="https://x.com/reefcodeshow" rel="noopener">X</a>
+    </nav>
   </div>
 </footer>
 
