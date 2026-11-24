@@ -189,7 +189,8 @@
   .host { background: var(--shallow); }
   .host-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; align-items: start; }
   @media (min-width: 860px) { .host-grid { grid-template-columns: minmax(16rem, 24rem) minmax(0, 1fr); gap: 4.5rem; } }
-  .host-portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 18px; }
+  .host-portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 30%; border-radius: 18px; background: var(--paper); }
+  .host-portrait[hidden] + div { grid-column: 1 / -1; }
   .host-name { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 1.5rem; margin: 0 0 0.2rem; }
   .host-role { color: var(--ink-soft); margin-bottom: 1.5rem; }
   .host-bio p { font-size: 1.1rem; }
@@ -202,19 +203,20 @@
   .facts strong { display: block; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.15rem; }
   .facts span { color: var(--ink-soft); font-size: 0.95rem; }
 
-  .strip {
-    display: grid; gap: 12px; margin-top: clamp(40px, 6vw, 72px);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(40px, 6vw, 72px); }
+  .strip figure { position: relative; flex: 1 1 calc(50% - 6px); min-width: 0; }
+  @media (min-width: 760px) {
+    .strip { flex-wrap: nowrap; }
+    .strip figure { flex: 0.75 1 0; }
+    .strip figure.wide { flex: 1.5 1 0; }
   }
-  @media (min-width: 760px) { .strip { grid-template-columns: 0.75fr 1.5fr 0.75fr 0.75fr; } }
-  .strip figure { position: relative; }
   .strip img { width: 100%; height: clamp(220px, 32vw, 380px); object-fit: cover; border-radius: 14px; }
   .strip figcaption {
     position: absolute; left: 10px; bottom: 10px;
     background: color-mix(in srgb, var(--ink) 78%, transparent); color: #fff;
     font-size: 0.85rem; padding: 0.25em 0.7em; border-radius: 999px;
   }
-  @media (max-width: 759px) { .strip figure.wide { grid-column: 1 / -1; order: -1; } }
+  @media (max-width: 759px) { .strip figure.wide { flex-basis: 100%; order: -1; } }
   .gallery-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem 2rem; margin-top: clamp(48px, 7vw, 88px); }
   .gallery-head h3 { margin: 0; }
   .gallery-head p { margin: 0; color: var(--ink-soft); }
@@ -229,6 +231,9 @@
   .lab-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; }
   .lab-card h3 { color: #fff; font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 0.6rem; }
   .lab-card p { color: #C9DCDF; }
+  .try { background: rgba(255, 212, 92, 0.12); border: 2px dashed #FFD45C; border-radius: 14px; padding: 0.9rem 1.1rem; margin: 1.25rem 0 0; }
+  .try strong { display: block; color: #FFD45C; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.1rem; margin-bottom: 0.2rem; }
+  .try p { color: #fff; margin: 0; }
   .lab-meta { list-style: none; padding: 0; margin: 1.25rem 0 1.75rem; display: grid; gap: 0.45rem; }
   .lab-meta li { padding-left: 1.4rem; position: relative; color: #C9DCDF; }
   .lab-meta li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.6rem; height: 2px; background: #7FD3CF; }
@@ -412,7 +417,7 @@
     <div class="wrap">
       <div class="host-grid">
         <figure class="host-portrait" data-photo>
-          <img src="images/host-portrait.jpg" alt="Manu Paramesh in his podcast studio" width="921" height="1152" loading="lazy" decoding="async" onerror="this.closest('[data-photo]').hidden=true">
+          <img src="images/host-portrait.jpg" alt="Manu Paramesh" width="960" height="1200" decoding="async">
         </figure>
         <div>
           <h2 id="host-title">Your host</h2>
@@ -427,14 +432,13 @@
             <li><strong>Triathlete</strong><span>Most recently the T100 in Dubai</span></li>
             <li><strong>Diver and freediver</strong><span>Five-plus dive spots around the world</span></li>
             <li><strong>Coral conservation</strong><span>Trained with Blue Corner Marine Research</span></li>
-            <li><strong>Guitar and animals</strong><span>What fills the rest of the week</span></li>
+            <li><strong>Music and sound</strong><span>Plays guitar, and works on machine learning for audio</span></li>
           </ul>
         </div>
       </div>
 
       <div class="gallery-head">
         <h3>Off the clock</h3>
-        <p>In the water, on the bike, and on the reef</p>
       </div>
       <div class="strip">
         <figure data-photo>
@@ -459,18 +463,21 @@
       <h2 id="lab-title">Reefcode Lab</h2>
       <p class="intro">Small things we build to get more people curious about the ocean, starting with the youngest listeners.</p>
       <div class="lab-card">
-        <a href="ocean-painter/" aria-label="Open Ocean Painter">
-          <img src="images/lab-ocean-painter.jpg" alt="Ocean Painter: a world map with glowing ocean regions and cards for sea creatures like the marine iguana and blue whale" width="960" height="720" loading="lazy" decoding="async">
+        <a href="ocean-painter/" aria-label="Open Ocean Painter" data-photo>
+          <img src="images/lab-ocean-painter.jpg" onerror="this.closest('[data-photo]').hidden=true" alt="Ocean Painter creature cards: marine iguana, emperor penguin, a river dolphin waiting to be painted, spider crab, sea turtle and blue whale" width="1440" height="1080" loading="lazy" decoding="async">
         </a>
         <div>
           <h3>Ocean Painter</h3>
           <p>An interactive world map for kids. They explore nine real ocean regions, meet creatures found nowhere else on Earth, and paint them back to life.</p>
+          <div class="try">
+            <strong>Try this</strong>
+            <p>Which ocean animal turns pinker as it gets older? Find it on the map, then paint it.</p>
+          </div>
           <ul class="lab-meta">
             <li>Made for curious kids and the grown-ups beside them</li>
-            <li>Works in any browser, on a phone or a laptop</li>
-            <li>Free, with no sign-up and no ads</li>
+            <li>Free, with no sign-up and no ads, on any phone or laptop</li>
           </ul>
-          <a class="btn" href="ocean-painter/">Open Ocean Painter</a>
+          <a class="btn" href="ocean-painter/">Play Ocean Painter</a>
         </div>
       </div>
     </div>
